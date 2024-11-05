@@ -47,9 +47,9 @@ async def on_message(message):
     if message.content.lower().startswith("mika") or message.content.lower().startswith("mika-chan") and message.content.lower().endswith("anime")  or message.content.lower().endswith("manga"):
         words = message.content.split() 
         name=" ".join(words[1:-1])
-        if message.content.lower().startswith("anime"):
+        if message.content.lower().endswith("anime"):
             await get_anime.searched_anime(message.channel,name)
-        else:
+        if message.content.lower().endswith("manga"):
             await get_manga.searched_manga(message.channel,name)
         
         recent_requests[message.author.id] = True 
