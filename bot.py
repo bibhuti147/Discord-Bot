@@ -1,12 +1,19 @@
 # Import discord library
+import asyncio
+from collections import defaultdict
 import discord
 import os
 import get_anime
+import get_manga
 
 # Create a client instance for the bot
 intents = discord.Intents.default()  # Initialize default intents
 intents.message_content = True  # Allows the bot to read message content
 client = discord.Client(intents=intents)
+
+# Track users who recently received anime info to respond to "thank you"
+recent_requests = defaultdict(lambda: None)  # Stores last user and clears after a timeout
+
 
 # Define an event that triggers when the bot has logged in
 @client.event
@@ -37,11 +44,27 @@ async def on_message(message):
     if "love" in message.content.lower() and "mika" in message.content.lower():
         await message.channel.send(f"love you too {message.author}")
 
-    if message.content.lower().startswith("anime") and message.content.lower().endswith("mika"):
-        words = message.content.split()
+    if message.content.lower().startswith("mika") or message.content.lower().startswith("mika-chan") and message.content.lower().endswith("anime")  or message.content.lower().endswith("manga"):
+        words = message.content.split() 
+        name=" ".join(words[1:-1])
+        if message.content.lower().startswith("anime"):
+            await get_anime.searched_anime(message.channel,name)
+        else:
+            await get_manga.searched_manga(message.channel,name)
+        
+        recent_requests[message.author.id] = True 
+        await asyncio.sleep(60)
+        recent_requests[message.author.id] = None
 
-        anime_name=" ".join(words[1:-1])
-        await get_anime.searched_anime(message.channel,anime_name)
+     # Respond to "thank you" if user recently searched for anime
+    if message.content.lower() == "thank you" and recent_requests[message.author.id]:
+        thankyou_imageurl = "https://i.imgur.com/wcjJjfC.jpeg"
+        thankyou_embed = discord.Embed()
+        thankyou_embed.set_image(thankyou_imageurl)
+        await message.channel.send(embed=thankyou_embed)
+        await message.channel.send("~Your Welcome~")
+        recent_requests[message.author.id] = None  # Reset after responding
+  
 
 # Run the bot with the extracted token
 client.run(os.getenv("DISCORD_TOKEN"))
