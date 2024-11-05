@@ -21,7 +21,7 @@ async def on_message(message):
 
     # Respond to a specific message content
     if message.content.startswith('!hello'):
-        await message.channel.send('Hello!')
+        await message.channel.send('Hello XD!')
 
      # Check if the message says "hello bot_name"
     if message.content.lower() == "hello mika":  # Replace "bot_name" with your bot's name
