@@ -45,6 +45,7 @@ async def on_message(message):
         await message.channel.send(f"love you too {message.author}")
 
     if message.content.lower().startswith("mika") or message.content.lower().startswith("mika-chan") and message.content.lower().endswith("anime")  or message.content.lower().endswith("manga"):
+        recent_requests[message.author.id] = None
         words = message.content.split() 
         name=" ".join(words[1:-1])
         if message.content.lower().endswith("anime"):
