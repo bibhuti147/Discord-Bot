@@ -59,10 +59,11 @@ async def on_message(message):
      # Respond to "thank you" if user recently searched for anime
     if message.content.lower() == "thank you" and recent_requests[message.author.id]:
         thankyou_imageurl = "https://i.imgur.com/wcjJjfC.jpeg"
-        thankyou_embed = discord.Embed()
+        thankyou_embed = discord.Embed( 
+            description="~Your Welcome~"
+        )
         thankyou_embed.set_image(thankyou_imageurl)
-        await message.channel.send(embed=thankyou_embed)
-        await message.channel.send("~Your Welcome~")
+        await message.channel.send(embed=thankyou_embed) 
         recent_requests[message.author.id] = None  # Reset after responding
   
 
