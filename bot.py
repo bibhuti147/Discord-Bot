@@ -1,6 +1,7 @@
 # Import discord library
 import discord
 import os
+import get_anime
 
 # Create a client instance for the bot
 intents = discord.Intents.default()  # Initialize default intents
@@ -35,6 +36,12 @@ async def on_message(message):
 
     if "love" in message.content.lower() and "mika" in message.content.lower():
         await message.channel.send(f"love you too {message.author}")
+
+    if message.content.lower().starstwith("anime") and message.content.lower().endstwith("mika"):
+        words = message.content.split()
+
+        anime_name=" ".join(words[1:-1])
+        await get_anime.searched_anime(message.channel,anime_name)
 
 # Run the bot with the extracted token
 client.run(os.getenv("DISCORD_TOKEN"))
