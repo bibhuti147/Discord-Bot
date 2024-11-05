@@ -49,7 +49,7 @@ async def on_message(message):
         name=" ".join(words[1:-1])
         if message.content.lower().endswith("anime"):
             await get_anime.searched_anime(message.channel,name)
-        if message.content.lower().endswith("manga"):
+        elif message.content.lower().endswith("manga"):
             await get_manga.searched_manga(message.channel,name)
         
         recent_requests[message.author.id] = True 
@@ -62,7 +62,7 @@ async def on_message(message):
         thankyou_embed = discord.Embed( 
             description="~Your Welcome~"
         )
-        thankyou_embed.set_image(thankyou_imageurl)
+        thankyou_embed.set_image(url=thankyou_imageurl)
         await message.channel.send(embed=thankyou_embed) 
         recent_requests[message.author.id] = None  # Reset after responding
   
