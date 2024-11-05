@@ -37,7 +37,7 @@ async def on_message(message):
     if "love" in message.content.lower() and "mika" in message.content.lower():
         await message.channel.send(f"love you too {message.author}")
 
-    if message.content.lower().starstwith("anime") and message.content.lower().endswith("mika"):
+    if message.content.lower().startswith("anime") and message.content.lower().endswith("mika"):
         words = message.content.split()
 
         anime_name=" ".join(words[1:-1])
