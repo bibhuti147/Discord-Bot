@@ -48,20 +48,20 @@ genres = [{'name': 'action', 'id': 1}, {'name': 'adventure', 'id': 2}, {'name': 
 
 async def top_anime(ctx,param: str,sid: int,eid: int):
     try:
-        async with aiohttp.ClientSession() as session:
-            if param == "10":
-                url='https://api.jikan.moe/v4/top/anime'
-            elif param == "recent" or param == "current":
-                url = "https://api.jikan.moe/v4/top/anime?filter=airing"
-            elif param == "upcoming":
-                url = "https://api.jikan.moe/v4/top/anime?filter=upcoming"
+        if param == "10":
+            url='https://api.jikan.moe/v4/top/anime'
+        elif param == "recent" or param == "current":
+            url = "https://api.jikan.moe/v4/top/anime?filter=airing"
+        elif param == "upcoming":
+            url = "https://api.jikan.moe/v4/top/anime?filter=upcoming"
+        else:
+            genre = next((genre for genre in genres if genre["name"] == param.lower()), None)
+            if(genre):
+                url=f"https://api.jikan.moe/v4/anime?genres={genre['id']}&sort_by=rank"
             else:
-                genre = next((genre for genre in genres if genre["name"] == param.lower()), None)
-                if(genre):
-                    url=f"https://api.jikan.moe/v4/anime?genres={genre['id']}&sort_by=rank"
-                else:
-                    return await ctx.send("No results found for this genre.")
-            
+                return await ctx.send("No results found for this genre.")
+
+        async with aiohttp.ClientSession() as session: 
             # Send an asynchronous GET request
             async with session.get(url) as response:
                 # Check if the response is successful

@@ -82,7 +82,7 @@ async def on_message(message):
         
         recent_requests[message.author.id] = None  # Reset after responding
 
-    if message.content.lower().startswith("Mika give me top 10") and message.content.lower().endswith("anime"):
+    if message.content.lower().startswith("Mika give me top") and message.content.lower().endswith("anime"):
         topanime_requests[message.author.id] = None
         words=message.content.split()
         await get_anime.top_anime(message.channel,words[-2],0,10)
