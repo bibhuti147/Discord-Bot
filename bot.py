@@ -13,6 +13,7 @@ client = discord.Client(intents=intents)
 
 # Track users who recently received anime info to respond to "thank you"
 recent_requests = defaultdict(lambda: None)  # Stores last user and clears after a timeout
+topanime_requests = defaultdict(lambda: None)
 
 
 # Define an event that triggers when the bot has logged in
@@ -80,7 +81,15 @@ async def on_message(message):
             await asyncio.sleep(60)
         
         recent_requests[message.author.id] = None  # Reset after responding
-    
+
+    if message.content.lower().startswith("Mika give me top 10") and message.content.lower().endswith("anime"):
+        topanime_requests[message.author.id] = None
+        words=message.content.split()
+        await get_anime.top_anime(message.channel,words[-2],0,10)
+        topanime_requests[message.author.id] = {"name":words[-2],"sid":0,"eid":10}
+        await asyncio.sleep(180)
+        topanime_requests[message.author.id] = None
+
     
 # Run the bot with the extracted token
 client.run(os.getenv("DISCORD_TOKEN"))
