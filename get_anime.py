@@ -47,6 +47,7 @@ genres = [{'name': 'action', 'id': 1}, {'name': 'adventure', 'id': 2}, {'name': 
 {'name': 'showbiz', 'id': 75}, {'name': 'space', 'id': 29}, {'name': 'strategy game', 'id': 11}, {'name': 'super power', 'id': 31}, {'name': 'survival', 'id': 76}, {'name': 'team sports', 'id': 77}, {'name': 'time travel', 'id': 78}, {'name': 'vampire', 'id': 32}, {'name': 'video game', 'id': 79}, {'name': 'visual arts', 'id': 80}, {'name': 'workplace', 'id': 48}, {'name': 'urban fantasy', 'id': 82}, {'name': 'villainess', 'id': 83}, {'name': 'josei', 'id': 43}, {'name': 'kids', 'id': 15}, {'name': 'seinen', 'id': 42}, {'name': 'shoujo', 'id': 25}, {'name': 'shounen', 'id': 27}]
 
 async def top_anime(ctx,param: str,sid: int,eid: int):
+    url=""
     try:
         if param == "10":
             url='https://api.jikan.moe/v4/top/anime'

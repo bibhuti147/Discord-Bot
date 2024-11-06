@@ -84,8 +84,9 @@ async def on_message(message):
 
     if message.content.lower().startswith("Mika give me top") and message.content.lower().endswith("anime"):
         topanime_requests[message.author.id] = None
-        words=message.content.split()
-        await get_anime.top_anime(message.channel,words[-2],0,10)
+        twords=message.content.split()
+        tname=" ".join(twords[-2:-1])
+        await get_anime.top_anime(message.channel,tname,0,10)
         topanime_requests[message.author.id] = {"name":words[-2],"sid":0,"eid":10}
         await asyncio.sleep(180)
         topanime_requests[message.author.id] = None
