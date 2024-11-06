@@ -2,7 +2,7 @@ import aiohttp
 import discord
 
 # Define an asynchronous function to fetch the manga data
-async def searched_manga(ctx,manga: str):
+async def searched_manga(ctx,manga: str,id: int):
     try:
         if manga == "":
             return
@@ -16,9 +16,9 @@ async def searched_manga(ctx,manga: str):
                     
                     # Extract and print the manga information
                     if data['data']:
-                        manga_data = data['data'][0]
+                        manga_data = data['data'][id]
                         
-                        manga_title = manga_data['titles'][0]['title']
+                        manga_title = manga_data['title']
                         manga_synopsis = manga_data['synopsis']
                         manga_url = manga_data['url']
                         manga_image = manga_data['images']['jpg']['image_url']

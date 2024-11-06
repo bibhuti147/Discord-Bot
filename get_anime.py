@@ -2,7 +2,7 @@ import aiohttp
 import discord
 
 # Define an asynchronous function to fetch the anime data
-async def searched_anime(ctx,anime: str):
+async def searched_anime(ctx,anime: str,id: int):
     try:
         if anime == "":
             return
@@ -16,9 +16,9 @@ async def searched_anime(ctx,anime: str):
                     
                     # Extract and print the anime information
                     if data['data']:
-                        anime_data = data['data'][0]
+                        anime_data = data['data'][id]
                         
-                        anime_title = anime_data['titles'][0]['title']
+                        anime_title = anime_data['title']
                         anime_synopsis = anime_data['synopsis']
                         anime_url = anime_data['url']
                         anime_image = anime_data['images']['jpg']['image_url']

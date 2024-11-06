@@ -49,23 +49,36 @@ async def on_message(message):
         words = message.content.split() 
         name=" ".join(words[1:-1])
         if message.content.lower().endswith("anime"):
-            await get_anime.searched_anime(message.channel,name)
+            await get_anime.searched_anime(message.channel,name,0)
+            recent_requests[message.author.id]={'type':'anime','name':name,'id':0}
         elif message.content.lower().endswith("manga"):
-            await get_manga.searched_manga(message.channel,name)
-        
-        recent_requests[message.author.id] = True 
-        await asyncio.sleep(60)
+            await get_manga.searched_manga(message.channel,name,0)
+            recent_requests[message.author.id]={'type':'manga','name':name,'id':0}
+         
+        await asyncio.sleep(180)
         recent_requests[message.author.id] = None
 
      # Respond to "thank you" if user recently searched for anime
-    if message.content.lower() == "thank you" and recent_requests[message.author.id]:
-        thankyou_imageurl = "https://i.imgur.com/wcjJjfC.jpeg"
-        thankyou_embed = discord.Embed( 
-            description="~Your Welcome~",
-            color=discord.Color.pink()
-        )
-        thankyou_embed.set_image(url=thankyou_imageurl)
-        await message.channel.send(embed=thankyou_embed) 
+    if message.author.id in recent_requests and recent_requests[message.author.id]:
+        if message.content.lower() == "thank you":
+            thankyou_imageurl = "https://i.imgur.com/wcjJjfC.jpeg"
+            thankyou_embed = discord.Embed( 
+                description="~Your Welcome~",
+                color=discord.Color.pink()
+            )
+            thankyou_embed.set_image(url=thankyou_imageurl)
+            await message.channel.send(embed=thankyou_embed) 
+        
+        elif message.content.lower() == "not this one":
+             # Retrieve the last search details from `recent_requests`
+            last_search = recent_requests[message.author.id]
+            last_search['id']+=1
+            if last_search['type'] == 'anime':
+                await get_anime.searched_anime(message.channel, last_search['name'],last_search['id'])
+            elif last_search['type'] == 'manga':
+                await get_manga.searched_manga(message.channel, last_search['name'],last_search['id'])
+            await asyncio.sleep(60)
+        
         recent_requests[message.author.id] = None  # Reset after responding
     
     
