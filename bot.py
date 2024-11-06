@@ -37,7 +37,7 @@ async def on_message(message):
         image_url = "https://i.imgur.com/kWUyjrO.png"
         
         # Send the image using embed
-        embed = discord.Embed()
+        embed = discord.Embed(color=discord.Color.orange())
         embed.set_image(url=image_url)
         await message.channel.send(embed=embed)
 
@@ -61,12 +61,13 @@ async def on_message(message):
     if message.content.lower() == "thank you" and recent_requests[message.author.id]:
         thankyou_imageurl = "https://i.imgur.com/wcjJjfC.jpeg"
         thankyou_embed = discord.Embed( 
-            description="~Your Welcome~"
+            description="~Your Welcome~",
+            color=discord.Color.pink()
         )
         thankyou_embed.set_image(url=thankyou_imageurl)
         await message.channel.send(embed=thankyou_embed) 
         recent_requests[message.author.id] = None  # Reset after responding
-  
-
+    
+    
 # Run the bot with the extracted token
 client.run(os.getenv("DISCORD_TOKEN"))
