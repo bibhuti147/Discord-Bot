@@ -82,7 +82,7 @@ async def on_message(message):
         
         recent_requests[message.author.id] = None  # Reset after responding
 
-    if message.content.lower().startswith("Mika give me top") and message.content.lower().endswith("anime"):
+    if message.content.lower().startswith("mika give me top 10") and message.content.lower().endswith("anime"):
         topanime_requests[message.author.id] = None
         twords=message.content.split()
         tname=" ".join(twords[-2:-1])
