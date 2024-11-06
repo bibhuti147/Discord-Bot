@@ -86,6 +86,7 @@ async def on_message(message):
         topanime_requests[message.author.id] = None
         twords=message.content.split()
         tname=" ".join(twords[-2:-1])
+        await message.channel.send(f"tname is {tname}")
         await get_anime.top_anime(message.channel,tname,0,10)
         topanime_requests[message.author.id] = {"name":words[-2],"sid":0,"eid":10}
         await asyncio.sleep(180)
