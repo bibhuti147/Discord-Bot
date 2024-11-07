@@ -62,6 +62,7 @@ async def on_message(message):
      # Respond to "thank you" if user recently searched for anime
     if message.author.id in recent_requests and recent_requests[message.author.id]:
         if message.content.lower() == "thank you":
+            recent_requests[message.author.id] = None  # Reset after responding
             thankyou_imageurl = "https://i.imgur.com/wcjJjfC.jpeg"
             thankyou_embed = discord.Embed( 
                 description="~Your Welcome~",
@@ -79,8 +80,8 @@ async def on_message(message):
             elif last_search['type'] == 'manga':
                 await get_manga.searched_manga(message.channel, last_search['name'],last_search['id'])
             await asyncio.sleep(60)
-        
-        recent_requests[message.author.id] = None  # Reset after responding
+            recent_requests[message.author.id] = None  # Reset after responding
+         
 
     if message.content.lower().startswith("mika give me top 10") and message.content.lower().endswith("anime"):
         topanime_requests[message.author.id] = None
@@ -98,8 +99,10 @@ async def on_message(message):
             top_search['eid'] += 5
             await get_anime.top_anime(message.channel,top_search['name'],top_search['sid'],top_search['eid'])
             await asyncio.sleep(60)
+            topanime_requests[message.author.id] = None
 
         elif message.content.lower() == "thank you":
+            topanime_requests[message.author.id] = None
             thankyou_imageurl = "https://i.imgur.com/wcjJjfC.jpeg"
             thankyou_embed = discord.Embed( 
                 description="~Your Welcome~",
@@ -107,9 +110,6 @@ async def on_message(message):
             )
             thankyou_embed.set_image(url=thankyou_imageurl)
             await message.channel.send(embed=thankyou_embed)
-        
-        topanime_requests[message.author.id] = None
-
 
     
 # Run the bot with the extracted token
