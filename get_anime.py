@@ -60,8 +60,8 @@ async def top_anime(ctx,param: str,sid: int,eid: int):
             if(genre):
                 url=f"https://api.jikan.moe/v4/anime?genres={genre['id']}&sort_by=rank"
             else:
-                return await ctx.send("No results found for this genre.")
-        await ctx.send(f"url is {url}")
+                return await ctx.send("No results found for this genre.") 
+            
         async with aiohttp.ClientSession() as session: 
             # Send an asynchronous GET request
             async with session.get(url) as response:

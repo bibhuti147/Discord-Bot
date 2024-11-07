@@ -45,14 +45,14 @@ async def on_message(message):
     if "love" in message.content.lower() and "mika" in message.content.lower():
         await message.channel.send(f"love you too {message.author}")
 
-    if message.content.lower().startswith("mika") or message.content.lower().startswith("mika-chan") and message.content.lower().endswith("anime")  or message.content.lower().endswith("manga"):
+    if message.content.lower().startswith("mika find") and message.content.lower().endswith("anime") or message.content.lower().endswith("manga"):
         recent_requests[message.author.id] = None
         words = message.content.split() 
-        name=" ".join(words[1:-1])
-        if message.content.lower().endswith("anime"):
+        name=" ".join(words[2:-1])
+        if words[-1].lower() == "anime":
             await get_anime.searched_anime(message.channel,name,0)
             recent_requests[message.author.id]={'type':'anime','name':name,'id':0}
-        elif message.content.lower().endswith("manga"):
+        elif words[-1].lower() == "manga":
             await get_manga.searched_manga(message.channel,name,0)
             recent_requests[message.author.id]={'type':'manga','name':name,'id':0}
          
@@ -85,8 +85,7 @@ async def on_message(message):
     if message.content.lower().startswith("mika give me top 10") and message.content.lower().endswith("anime"):
         topanime_requests[message.author.id] = None
         twords=message.content.split()
-        tname=" ".join(twords[-2:-1])
-        await message.channel.send(f"tname is {tname}")
+        tname=" ".join(twords[-2:-1]) 
         await get_anime.top_anime(message.channel,tname,0,10)
         topanime_requests[message.author.id] = {"name":words[-2],"sid":0,"eid":10}
         await asyncio.sleep(180)
