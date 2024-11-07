@@ -99,8 +99,7 @@ async def on_message(message):
             top_search['eid'] += 5
             await get_anime.top_anime(message.channel,top_search['name'],top_search['sid'],top_search['eid'])
             await asyncio.sleep(60)
-            topanime_requests[message.author.id] = None
-
+            
         elif message.content.lower() == "thank you":
             topanime_requests[message.author.id] = None
             thankyou_imageurl = "https://i.imgur.com/wcjJjfC.jpeg"
