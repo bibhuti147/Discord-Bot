@@ -91,6 +91,26 @@ async def on_message(message):
         await asyncio.sleep(180)
         topanime_requests[message.author.id] = None
 
+    if message.author.id in topanime_requests and topanime_requests[message.author.id]:
+        if message.content.lower() == "give me some more":
+            top_search = topanime_requests[message.author.id]
+            top_search['sid'] = top_search["eid"]
+            top_search['eid'] += 5
+            await get_anime.top_anime(message.channel,top_search['name'],top_search['sid'],top_search['eid'])
+            await asyncio.sleep(60)
+
+        elif message.content.lower() == "thank you":
+            thankyou_imageurl = "https://i.imgur.com/wcjJjfC.jpeg"
+            thankyou_embed = discord.Embed( 
+                description="~Your Welcome~",
+                color=discord.Color.pink()
+            )
+            thankyou_embed.set_image(url=thankyou_imageurl)
+            await message.channel.send(embed=thankyou_embed)
+        
+        topanime_requests[message.author.id] = None
+
+
     
 # Run the bot with the extracted token
 client.run(os.getenv("DISCORD_TOKEN"))

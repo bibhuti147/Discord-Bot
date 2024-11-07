@@ -1,5 +1,6 @@
 import aiohttp
 import discord
+import math
 
 # Define an asynchronous function to fetch the anime data
 async def searched_anime(ctx,anime: str,id: int):
@@ -47,21 +48,24 @@ genres = [{'name': 'action', 'id': 1}, {'name': 'adventure', 'id': 2}, {'name': 
 {'name': 'showbiz', 'id': 75}, {'name': 'space', 'id': 29}, {'name': 'strategy game', 'id': 11}, {'name': 'super power', 'id': 31}, {'name': 'survival', 'id': 76}, {'name': 'team sports', 'id': 77}, {'name': 'time travel', 'id': 78}, {'name': 'vampire', 'id': 32}, {'name': 'video game', 'id': 79}, {'name': 'visual arts', 'id': 80}, {'name': 'workplace', 'id': 48}, {'name': 'urban fantasy', 'id': 82}, {'name': 'villainess', 'id': 83}, {'name': 'josei', 'id': 43}, {'name': 'kids', 'id': 15}, {'name': 'seinen', 'id': 42}, {'name': 'shoujo', 'id': 25}, {'name': 'shounen', 'id': 27}]
 
 async def top_anime(ctx,param: str,sid: int,eid: int):
-    url=""
+    url = ""
+    page = 1 + math.floor(sid/25)
+    sid = sid - 25*(page-1)
+    eid = eid - 25*(page-1)
     try:
         if param == "10":
-            url='https://api.jikan.moe/v4/top/anime'
+            url = f'https://api.jikan.moe/v4/top/anime?page={page}'
         elif param == "recent" or param == "current":
-            url = "https://api.jikan.moe/v4/top/anime?filter=airing"
+            url = f"https://api.jikan.moe/v4/top/anime?page={page}&filter=airing"
         elif param == "upcoming":
-            url = "https://api.jikan.moe/v4/top/anime?filter=upcoming"
+            url = f"https://api.jikan.moe/v4/top/anime?page={page}&filter=upcoming"
         else:
             genre = next((genre for genre in genres if genre["name"] == param.lower()), None)
             if(genre):
-                url=f"https://api.jikan.moe/v4/anime?genres={genre['id']}&sort_by=rank"
+                url = f"https://api.jikan.moe/v4/anime?page={page}&genres={genre['id']}&order_by=score&sort=desc"
             else:
                 return await ctx.send("No results found for this genre.") 
-            
+
         async with aiohttp.ClientSession() as session: 
             # Send an asynchronous GET request
             async with session.get(url) as response:
@@ -74,14 +78,14 @@ async def top_anime(ctx,param: str,sid: int,eid: int):
                         topanime_data = data['data'][sid:eid]
                         for anime_data in topanime_data:
                             anime_title = anime_data['title']
-                            anime_synopsis = anime_data['synopsis']
+                            anime_excerpt = anime_data['title_english']
                             anime_url = anime_data['url']
                             anime_image = anime_data['images']['jpg']['image_url'] 
                             # Create an embed message with anime details
                             embed = discord.Embed(
                                 title=anime_title,
                                 url=anime_url,
-                                description=anime_synopsis,
+                                description=anime_excerpt,
                                 color=discord.Color.blue()
                             )
                             embed.set_thumbnail(url=anime_image)  # Set the anime image as the thumbnail
